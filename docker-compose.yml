@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: sistema-citas
+    ports:
+      - "8080:3001"  # Expone el contenedor en el puerto 8080 del host
+    depends_on:
+      - db
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=mipassword
+      - DB_NAME=agendamiento_citas
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: sh -c "/usr/local/bin/wait-for-it.sh db:3306 -- npm start"
+
+  db:
+    image: mysql:8.0
+    container_name: mysql-citas
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mipassword
+      MYSQL_DATABASE: agendamiento_citas 
+      TZ: America/Bogota
+    ports:
+      - "3307:3306"  # Expone MySQL en el puerto 3307 del host
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma-citas
+    restart: always
+    depends_on:
+      - db
+    environment:
+      - PMA_HOST=db
+      - PMA_USER=root
+      - PMA_PASSWORD=mipassword
+    ports:
+      - "8081:80"  # phpMyAdmin estará en el puerto 8081 del host
+
+volumes:
+  mysql_data:

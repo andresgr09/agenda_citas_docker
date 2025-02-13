@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleccionar Citas Agendadas</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="icon" href="../images//favico.png" type="image/png">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 -->
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+    <div class="bg-white p-6 rounded shadow-md w-full max-w-md">
+        <h1 class="text-xl font-semibold text-center mb-4">Seleccionar Citas Agendadas</h1>
+
+        <form id="fechaForm" class="space-y-4">
+            <div>
+                <label for="fechaInicio" class="block">Fecha Inicio</label>
+                <input type="date" id="fechaInicio" name="fechaInicio" class="w-full px-4 py-2 border rounded" required>
+            </div>
+            <div>
+                <label for="fechaFin" class="block">Fecha Fin</label>
+                <input type="date" id="fechaFin" name="fechaFin" class="w-full px-4 py-2 border rounded" required>
+            </div>
+            <div>
+                <label for="ciudad" class="block">Ciudad</label>
+                <select id="ciudad" name="ciudad" class="w-full px-4 py-2 border rounded">
+                    <option value="">Seleccione una ciudad</option>
+                    <option value="ARAUCA">ARAUCA</option>
+                    <option value="ARMENIA">ARMENIA</option>
+                    <option value="BARRANQUILLA">BARRANQUILLA</option>
+                    <option value="BOGOTA DC">BOGOTÁ DC</option>
+                    <option value="BUCARAMANGA">BUCARAMANGA</option>
+                    <option value="BUENAVENTURA">BUENAVENTURA</option>
+                    <option value="CALI">CALI</option>
+                    <option value="CARTAGENA DE INDIAS">CARTAGENA DE INDIAS</option>
+                    <option value="CÚCUTA">CÚCUTA</option>
+                    <option value="IBAGUÉ">IBAGUÉ</option>
+                    <option value="INIRIDA">INIRIDA</option>
+                    <option value="LETICIA">LETICIA</option>
+                    <option value="MAICAO">MAICAO</option>
+                    <option value="MANIZALES">MANIZALES</option>
+                    <option value="MEDELLIN">MEDELLÍN</option>
+                    <option value="MONTERÍA">MONTERÍA</option>
+                    <option value="NEIVA">NEIVA</option>
+                    <option value="PASTO">PASTO</option>
+                    <option value="PEREIRA">PEREIRA</option>
+                    <option value="POPAYÁN">POPAYÁN</option>
+                    <option value="PROVIDENCIA Y SANTA CATALINA">PROVIDENCIA Y SANTA CATALINA</option>
+                    <option value="PUERTO CARREÑO">PUERTO CARREÑO</option>
+                    <option value="PUERTO LEGUÍZAMO">PUERTO LEGUÍZAMO</option>
+                    <option value="QUIBDÓ">QUIBDÓ</option>
+                    <option value="RIOHACHA">RIOHACHA</option>
+                    <option value="RUMICHACA">RUMICHACA</option>
+                    <option value="SAN ANDRÉS">SAN ANDRÉS</option>
+                    <option value="SANTA MARTA">SANTA MARTA</option>
+                    <option value="SINCELEJO">SINCELEJO</option>
+                    <option value="TUMACO">TUMACO</option>
+                    <option value="TUNJA">TUNJA</option>
+                    <option value="VALLEDUPAR">VALLEDUPAR</option>
+                    <option value="VILLAVICENCIO">VILLAVICENCIO</option>
+                    <option value="YOPAL">YOPAL</option>
+                </select>
+            </div>
+            <div class="flex justify-between space-x-2">
+                <button id="descargarCsv" type="button" class="w-full px-4 py-2 bg-green-500 text-white rounded">Descargar Excel</button>
+            </div>
+        </form>
+
+        <div class="mt-4">
+            <button id="cerrarSesion" class="w-full px-4 py-2 bg-red-500 text-white rounded">Cerrar Sesión</button>
+        </div>
+
+        <div id="citasResult" class="mt-4">
+            <!-- Aquí se mostrarán las citas encontradas -->
+        </div>
+    </div>
+
+    <script src="descargarcitas.js"></script> <!-- Incluir el archivo JavaScript -->
+</body>
+</html>
