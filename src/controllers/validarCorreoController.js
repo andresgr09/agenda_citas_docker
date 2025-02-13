@@ -29,7 +29,7 @@ export const validarCorreoDocumento = [
             });
 
             if (citaExistente) {
-                return res.status(200).json({ success: false, message: 'El número de documento  ya está asociado a otro correo en la plataforma.' });
+                return res.status(400).json({ success: false, message: 'El número de documento  ya está asociado a otro correo en la plataforma.' });
             }
 
             // Verificar en la tabla historico_citas_agendadas

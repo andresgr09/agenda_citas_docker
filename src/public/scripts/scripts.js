@@ -17,7 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
         "REGISTRO DE VISA",
         "CERTIFICADO DE MOVIMIENTOS MIGRATORIOS",
         "SALVOCONDUCTO",
-        "REEXPEDICIÓN DE PPT - CORRECCIÓN INFORMACIÓN"
+        "REEXPEDICIÓN DE PPT - CORRECCIÓN INFORMACIÓN",
+        "DUPLICADO PPT - PÉRDIDA - HURTO",
     ];
 
     flatpickr(dateInput, {
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             Swal.fire({
                 icon: 'info',
                 title: 'Advertencia',
-                text: 'Atención: Recuerde diligenciar el Formulario Único de Trámites (FUT) ya que es el documento obligatorio, exigido ala entrada del Centro Facilitador de Servicios Migratorios (No aplica aplica para citas de Proceso Administrativo o Atención SIRE).',
+                text: 'Atención: Recuerde diligenciar el Formulario Único de Trámites (FUT) ya que es el documento obligatorio, exigido a la entrada del Centro Facilitador de Servicios Migratorios (No aplica aplica para citas de Proceso Administrativo o Atención SIRE).',
                 confirmButtonColor: '#337ab7',
                 confirmButtonText: 'Aceptar',
             });
@@ -180,8 +181,8 @@ document.addEventListener('DOMContentLoaded', () => {
         Swal.fire({
             icon: 'success',
             title: 'Cita guardada',
-            text: 'Por favor, revise su correo electrónico para confirmar la cita.',
-        }).then(() => location.reload());
+              html: 'Por favor, revise su correo electrónico para confirmar el agendamiento de su cita. <br><strong>NOTA: Recuerde que debe confirmar su cita en los próximos 5 minutos. De no hacerlo, tendrá que realizar un nuevo agendamiento.</strong>',
+}).then(() => location.reload());
     });
     
     
