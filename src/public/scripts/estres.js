@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const url = 'http://localhost:3000/api/guardar-cita'; // Cambia la URL según tu configuración
-const numRequests = 50; // Número de solicitudes que deseas enviar
+const url = 'http://localhost:8080/api/guardar-cita'; // Cambia la URL según tu configuración
+const numRequests = 2; // Número de solicitudes que deseas enviar
 const delay = 10; // Retraso entre solicitudes en milisegundos
 
 const citaData = {

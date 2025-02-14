@@ -22,10 +22,17 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     flatpickr(dateInput, {
+        
         dateFormat: "Y-m-d",
         minDate: new Date().fp_incr(1),
         altInput: true,
         altFormat: "F j, Y",
+        disable: [
+            function(date) {
+                // Deshabilitar sábados (6) y domingos (0)
+                return (date.getDay() === 0 || date.getDay() === 6);
+            }
+        ]
     });
 
     citySelect.addEventListener('change', () => {
@@ -174,6 +181,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 icon: 'warning',
                 title: 'Atención',
                 text: result.message,
+                confirmButtonColor: '#337ab7',
+                confirmButtonText: 'Aceptar',
             });
             return;
         }
@@ -182,15 +191,20 @@ document.addEventListener('DOMContentLoaded', () => {
             icon: 'success',
             title: 'Cita guardada',
               html: 'Por favor, revise su correo electrónico para confirmar el agendamiento de su cita. <br><strong>NOTA: Recuerde que debe confirmar su cita en los próximos 5 minutos. De no hacerlo, tendrá que realizar un nuevo agendamiento.</strong>',
-}).then(() => location.reload());
+              confirmButtonColor: '#337ab7',
+              confirmButtonText: 'Aceptar',
+              
+            }).then(() => location.reload());
     });
     
     
 
-    modalOverlay.addEventListener('click', () => {
-        formModalForm.classList.remove('visible');
-        modalOverlay.classList.remove('visible');
+    modalOverlay.addEventListener('click', (event) => {
+        // Verifica que el clic sea en el overlay, no dentro del modal
+        if (event.target === modalOverlay) {
+            document.getElementById('form-modal').classList.remove('visible');
+            modalOverlay.classList.remove('visible');
+        }
     });
-
 
 });

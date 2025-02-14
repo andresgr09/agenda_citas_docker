@@ -27,7 +27,8 @@ app.use(cors(corsOptions));  // Usa la configuración de CORS con la opción par
 app.use(express.json());
 
 // Servir archivos estáticos desde la carpeta 'public'
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('src/public'));
+app.use('/images', express.static('src/public/images'));
 
 // Ruta para servir el archivo 'index.html'
 app.get('/', (req, res) => {
