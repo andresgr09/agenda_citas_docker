@@ -2,10 +2,15 @@ import nodemailer from 'nodemailer';
 import path from 'path';
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'relay.migracioncolombia.gov.co',
+  port: 25,
+  secure: false, // Cambia a true si usas un puerto seguro (por ejemplo, 465)
+  tls: {
+    rejectUnauthorized: false // Deshabilita la verificación del certificado
+  },
   auth: {
-    user: 'felipecano09@gmail.com',
-    pass: 'toor cxxc kcdr xrwl'
+    // user: 'felipecano09@gmail.com',
+    // pass: 'toor cxxc kcdr xrwl'
   }
 });
 
@@ -14,7 +19,7 @@ export const enviarCorreoConfirmacion = (destinatario, asunto, mensaje) => {
   const imagePath = path.resolve('src/public/images/logo-migracion-colombia.png');
 
   const mailOptions = {
-    from: 'aplicaciones@migracioncolombia.gov.co',
+    from: 'citas@migracioncolombia.gov.co',
     to: destinatario,
     subject: asunto,
     html: mensaje,

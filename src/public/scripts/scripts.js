@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalOverlay = document.getElementById('modal-overlay');
 
     const tramitesConAdvertencia = [
-        "CÉDULA EXTRANJERÍA",
+        "CÉDULA DE EXTRANJERÍA",
         "REGISTRO DE VISA",
         "CERTIFICADO DE MOVIMIENTOS MIGRATORIOS",
         "SALVOCONDUCTO",
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             Swal.fire({
                 icon: 'info',
                 title: 'Advertencia',
-                text: 'Atención: Recuerde diligenciar el Formulario Único de Trámites (FUT) ya que es el documento obligatorio, exigido a la entrada del Centro Facilitador de Servicios Migratorios (No aplica aplica para citas de Proceso Administrativo o Atención SIRE).',
+                text: 'Atención: Recuerde diligenciar el Formulario Único de Trámites (FUT) ya que es el documento obligatorio, exigido a la entrada del Centro Facilitador de Servicios Migratorios (No aplica para citas de Proceso Administrativo o Atención SIRE).',
                 confirmButtonColor: '#337ab7',
                 confirmButtonText: 'Aceptar',
             });
