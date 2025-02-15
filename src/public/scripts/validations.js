@@ -52,7 +52,6 @@ export const validateFormData = (data) => {
         errors.push('El teléfono debe contener 10 dígitos y solo números.');
     }
 
-
     const numIdentificacionRegex = /^[A-Z0-9]+$/;
     if (!numIdentificacionRegex.test(data.numIdentificacion)) {
         errors.push('El número de identificación solo puede contener letras mayúsculas y números.');

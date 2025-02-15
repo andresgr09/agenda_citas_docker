@@ -1,5 +1,5 @@
 import { mostrarHorasDisponibles, seleccionarHora } from './helpers.js';
-import { validarEdad, validarCorreos, validarDominioCorreo, validateFormData } from './validations.js';
+import { validateFormData } from './validations.js';
 import { consultarCitas, guardarCita } from './apiHandlers.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     flatpickr(dateInput, {
-        
         dateFormat: "Y-m-d",
         minDate: new Date().fp_incr(1),
         altInput: true,
@@ -71,7 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const data = await consultarCitas(ciudad, tramite, fecha_cita);
-            // if ( data?.success && data?.data.length > 0  )
             mostrarHorasDisponibles(data.data, seleccionarHora);
         } catch (error) {
             console.error(error);
@@ -84,7 +82,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData(formModalForm);
         const data = Object.fromEntries(formData.entries());
 
-        // Nueva validación antes de guardar la cita
+        // Validación de datos del formulario
+        const errors = validateFormData(data);
+        if (errors.length > 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Advertencia',
+                html: errors.join('<br>'),
+                confirmButtonColor: '#337ab7',
+                confirmButtonText: 'Aceptar',
+            });
+            return;
+        }
+
+        // Validación de correo y documento
         const tipoDoc = data.tipoDoc;
         const numIdentificacion = data.numIdentificacion;
         const correo = data.correo;
@@ -99,7 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             const result = await response.json();
-            console.log('result:', result);
             if (!response.ok || !result?.success) {
                 Swal.fire({
                     icon: 'error',
@@ -122,82 +132,36 @@ document.addEventListener('DOMContentLoaded', () => {
             return; // Detener el proceso si hay un error en la validación
         }
 
-        // Validación de datos del formulario
-        const errors = validateFormData(data);
-        if (errors.length > 0) {
+        // Guardar la cita
+        try {
+            const result = await guardarCita(data);
+            if (!result.success) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Atención',
+                    text: result.message,
+                    confirmButtonColor: '#337ab7',
+                    confirmButtonText: 'Aceptar',
+                });
+                return;
+            }
+
             Swal.fire({
-                icon: 'warning',
-                title: 'Advertencia',
-                html: errors.join('<br>'),
+                icon: 'success',
+                title: 'Cita guardada',
+                html: 'Por favor, revise su correo electrónico para confirmar el agendamiento de su cita. <br><strong>NOTA: Recuerde que debe confirmar su cita en los próximos 5 minutos. De no hacerlo, tendrá que realizar un nuevo agendamiento.</strong>',
                 confirmButtonColor: '#337ab7',
                 confirmButtonText: 'Aceptar',
-            });
-            return;
-        }
-
-        // try {
-        //     const result = await guardarCita(data);
-        //     Swal.fire({
-        //         icon: 'success',
-        //         title: 'Cita guardada',
-        //         html: 'Por favor, revise su correo electrónico para confirmar el agendamiento de su cita. <br><strong>NOTA: Recuerde que debe confirmar su cita en los próximos 5 minutos. De no hacerlo, tendrá que realizar un nuevo agendamiento.</strong>',
-        //     }).then(() => {
-        //         location.reload();
-        //     });
-        // } catch (error) {
-        //     console.error(error);
-        //     Swal.fire({
-        //         icon: 'error',
-        //         title: 'Error',
-        //         text: `Error al guardar la cita: ${error.message}`,
-        //     });
-        // }
-
-    //     try {
-    //         const result = await guardarCita(data);
-    //         if (!result.success) throw new Error(result.message);
-    //         Swal.fire({
-    //             icon: 'success',
-    //             title: 'Cita guardada',
-    //              html: 'Por favor, revise su correo electrónico para confirmar el agendamiento de su cita. <br><strong>NOTA: Recuerde que debe confirmar su cita en los próximos 5 minutos. De no hacerlo, tendrá que realizar un nuevo agendamiento.</strong>',
-    // }).then(() => location.reload());
-    //     } catch (error) {
-    //         console.error(error);
-    //         Swal.fire({ icon: 'error', title: 'Error', text: error.message || 'Error desconocido' });
-    //     }
-        
-    });
-
-
-    document.getElementById('form-modal-form').addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const formData = new FormData(formModalForm);
-        const data = Object.fromEntries(formData.entries());
-    
-        const result = await guardarCita(data);
-    
-        if (!result.success) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Atención',
-                text: result.message,
-                confirmButtonColor: '#337ab7',
-                confirmButtonText: 'Aceptar',
-            });
-            return;
-        }
-    
-        Swal.fire({
-            icon: 'success',
-            title: 'Cita guardada',
-              html: 'Por favor, revise su correo electrónico para confirmar el agendamiento de su cita. <br><strong>NOTA: Recuerde que debe confirmar su cita en los próximos 5 minutos. De no hacerlo, tendrá que realizar un nuevo agendamiento.</strong>',
-              confirmButtonColor: '#337ab7',
-              confirmButtonText: 'Aceptar',
-              
             }).then(() => location.reload());
+        } catch (error) {
+            console.error(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: `Error al guardar la cita: ${error.message}`,
+            });
+        }
     });
-    
-    
 
     modalOverlay.addEventListener('click', (event) => {
         // Verifica que el clic sea en el overlay, no dentro del modal
@@ -206,5 +170,4 @@ document.addEventListener('DOMContentLoaded', () => {
             modalOverlay.classList.remove('visible');
         }
     });
-
 });

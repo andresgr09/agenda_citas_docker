@@ -29,7 +29,7 @@ export const validarCorreoDocumento = [
             });
 
             if (citaExistente) {
-                return res.status(400).json({ success: false, message: 'El número de documento  ya está asociado a otro correo en la plataforma.' });
+                return res.status(200).json({ success: false, message: 'El número de documento ya está asociado a otro correo en la plataforma.' });
             }
 
             // Verificar en la tabla historico_citas_agendadas
@@ -42,13 +42,13 @@ export const validarCorreoDocumento = [
             });
 
             if (historicoExistente) {
-                return res.status(200).json({ success: false,message: 'El número de documento y tipo de documento ya están asociados a otro correo en el histórico de citas agendadas.' });
+                return res.status(200).json({ success: false, message: 'El número de documento y tipo de documento ya están asociados a otro correo en el histórico de citas agendadas.' });
             }
 
             res.status(200).json({ success: true, message: 'El documento y correo son válidos.' });
         } catch (error) {
             console.error('Error al validar el documento:', error);
-            res.status(200).json({ success: false , message: 'Error al validar el documento', error: error.message });
+            res.status(200).json({ success: false, message: 'Error al validar el documento', error: error.message });
         }
     }
 ];
