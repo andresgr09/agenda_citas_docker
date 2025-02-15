@@ -9,10 +9,12 @@ services:
     depends_on:
       - db
     environment:
+      - SERVER=http://172.20.3.35
+      - PORT=3001
       - NODE_ENV=production
       - DB_HOST=db
       - DB_USER=root
-      - DB_PASSWORD=mipassword
+      - DB_PASSWORD=Migracion*2025
       - DB_NAME=agendamiento_citas
     volumes:
       - .:/app
@@ -24,13 +26,14 @@ services:
     container_name: mysql-citas
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: mipassword
+      MYSQL_ROOT_PASSWORD: Migracion*2025
       MYSQL_DATABASE: agendamiento_citas 
       TZ: America/Bogota
     ports:
       - "3307:3306"  # Expone MySQL en el puerto 3307 del host
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql       
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -41,7 +44,7 @@ services:
     environment:
       - PMA_HOST=db
       - PMA_USER=root
-      - PMA_PASSWORD=mipassword
+      - PMA_PASSWORD=Migracion*2025
     ports:
       - "8081:80"  # phpMyAdmin estará en el puerto 8081 del host
 

@@ -10,7 +10,7 @@ import  {verificarToken}  from './middleware/auth.js';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT ;
+const PORT = 3001; //process.env.PORT ;
 
 // Obtener el directorio actual en ESM
 const __filename = fileURLToPath(import.meta.url);

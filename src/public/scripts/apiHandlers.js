@@ -10,7 +10,7 @@ const handleApiResponse = async (response) => {
 
 export async function consultarCitas(ciudad, tramite, fecha_cita) {
     try {
-        const response = await fetch('http://172.20.3.35:8080/api/consultar-citas', {
+        const response = await fetch('https://apps.migracioncolombia.gov.co:4443/citas/api/consultar-citas', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ciudad, tramite, fecha_cita })
@@ -23,7 +23,7 @@ export async function consultarCitas(ciudad, tramite, fecha_cita) {
 
 export async function guardarCita(data) {
     try {
-        const response = await fetch('http://172.20.3.35:8080/api/guardar-cita', {
+        const response = await fetch('https://apps.migracioncolombia.gov.co:4443/citas/api/guardar-cita', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)

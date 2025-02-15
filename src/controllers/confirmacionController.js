@@ -15,7 +15,7 @@ export const confirmarCita = async (req, res) => {
                     <body>
                         <div id="modal" style="display: block; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
                             <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
-                                <img src="/images/logo-migracion-colombia.png" alt="Logo" style="width: 250px; display: block; margin: 0 auto;">
+                                <img src="/citas/images/logo-migracion-colombia.png" alt="Logo" style="width: 250px; display: block; margin: 0 auto;">
                                 <h1 style="color: red; text-align: center;">Cita no encontrada</h1>
                                 <button onclick="window.close()" style="display: block; margin: 20px auto; padding: 10px 20px; background-color: #f44336; color: white; border: none; cursor: pointer;">Cerrar ventana</button>
                             </div>
@@ -36,7 +36,7 @@ export const confirmarCita = async (req, res) => {
                     <body>
                         <div id="modal" style="display: block; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
                             <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
-                                <img src="/images/logo-migracion-colombia.png" alt="Logo" style="width: 250px; display: block; margin: 0 auto;">
+                                <img src="/citas/images/logo-migracion-colombia.png" alt="Logo" style="width: 250px; display: block; margin: 0 auto;">
                                 <h1 style="color: red; text-align: center;">El enlace de confirmación ha expirado.</h1>
                                 <button onclick="window.close()" style="display: block; margin: 20px auto; padding: 10px 20px; background-color: #f44336; color: white; border: none; cursor: pointer;">Cerrar ventana</button>
                             </div>
@@ -64,7 +64,7 @@ export const confirmarCita = async (req, res) => {
                         <body>
                             <div id="modal" style="display: block; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
                                 <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
-                                    <img src="/images/logo-migracion-colombia.png" alt="Logo" style="width: 250px; display: block; margin: 0 auto;">
+                                    <img src="/citas/images/logo-migracion-colombia.png" alt="Logo" style="width: 250px; display: block; margin: 0 auto;">
                                     <h1 style="color: red; text-align: center;">Solo puede tener una cita programada por día.</h1>
                                     <button onclick="window.close()" style="display: block; margin: 20px auto; padding: 10px 20px; background-color: #f44336; color: white; border: none; cursor: pointer;">Cerrar ventana</button>
                                 </div>
@@ -82,7 +82,7 @@ export const confirmarCita = async (req, res) => {
                     <body>
                         <div id="modal" style="display: block; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
                             <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
-                                <img src="/images/logo-migracion-colombia.png" alt="Logo" style="width: 250px; display: block; margin: 0 auto;">
+                                <img src="/citas/images/logo-migracion-colombia.png" alt="Logo" style="width: 250px; display: block; margin: 0 auto;">
                                 <h1 style="color: red; text-align: center;">Esta cita ya ha sido agendada. Intente con otra hora o fecha.</h1>
                                 <button onclick="window.close()" style="display: block; margin: 20px auto; padding: 10px 20px; background-color: #f44336; color: white; border: none; cursor: pointer;">Cerrar ventana</button>
                             </div>
@@ -109,7 +109,7 @@ export const confirmarCita = async (req, res) => {
                     <body>
                         <div id="modal" style="display: block; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
                             <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
-                                <img src="/images/logo-migracion-colombia.png" alt="Logo" style="width: 250px; display: block; margin: 0 auto;">
+                                <img src="/citas/images/logo-migracion-colombia.png" alt="Logo" style="width: 250px; display: block; margin: 0 auto;">
                                 <h1 style="color: red; text-align: center;">Ya tiene una cita confirmada para este día.</h1>
                                 <button onclick="window.close()" style="display: block; margin: 20px auto; padding: 10px 20px; background-color: #f44336; color: white; border: none; cursor: pointer;">Cerrar ventana</button>
                             </div>
@@ -157,7 +157,7 @@ export const confirmarCita = async (req, res) => {
                 <body>
                     <div id="modal" style="display: block; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
                         <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
-                            <img src="/images/logo-migracion-colombia.png" alt="Logo" style="width: 250px; display: block; margin: 0 auto;">
+                            <img src="/citas/images/logo-migracion-colombia.png" alt="Logo" style="width: 250px; display: block; margin: 0 auto;">
                             <h1 style="color: green; text-align: center;">Cita confirmada</h1>
                             <p style="text-align: center;">Radicado: ${radicado}</p>
                             <button onclick="window.close()" style="display: block; margin: 20px auto; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">Cerrar ventana</button>
@@ -173,7 +173,7 @@ export const confirmarCita = async (req, res) => {
                 <body>
                     <div id="modal" style="display: block; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
                         <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
-                            <img src="/images/logo-migracion-colombia.png" alt="Logo" style="width: 250px; display: block; margin: 0 auto;">
+                            <img src="/citas/images/logo-migracion-colombia.png" alt="Logo" style="width: 250px; display: block; margin: 0 auto;">
                             <h1 style="color: red; text-align: center;">Error al confirmar la cita</h1>
                             <button onclick="window.close()" style="display: block; margin: 20px auto; padding: 10px 20px; background-color: #f44336; color: white; border: none; cursor: pointer;">Cerrar ventana</button>
                         </div>

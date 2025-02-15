@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const correo = data.correo;
 
         try {
-            const response = await fetch('http://172.20.3.35:8080/api/validar-correo-documento', {
+            const response = await fetch('https://apps.migracioncolombia.gov.co:4443/citas/api/validar-correo-documento', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
