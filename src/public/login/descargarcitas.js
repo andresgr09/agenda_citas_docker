@@ -51,7 +51,7 @@ document.getElementById('descargarCsv').addEventListener('click', async () => {
     }
 
     try {
-        const response = await fetch(`http://172.20.3.35:8080/api/citas-agendadas?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&ciudad=${ciudad}&formato=excel`, {
+        const response = await fetch(`/citas-agendadas?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&ciudad=${ciudad}&formato=excel`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
