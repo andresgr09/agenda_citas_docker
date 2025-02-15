@@ -10,7 +10,7 @@ const handleApiResponse = async (response) => {
 
 export async function consultarCitas(ciudad, tramite, fecha_cita) {
     try {
-        const response = await fetch('/api/consultar-citas', {
+        const response = await fetch('/citas/api/consultar-citas', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ciudad, tramite, fecha_cita })
