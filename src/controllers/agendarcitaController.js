@@ -38,6 +38,11 @@ export const insertarCita = [
                 CitaDisponible.findOne({ where: { id_cita_dispo: citaId }, raw: true })
             ]);
 
+            console.log('correoExistente:', correoExistente);
+            console.log('citaExistente:', citaExistente);
+            console.log('citaMismaFecha:', citaMismaFecha);
+            console.log('citaSeleccionada:', citaSeleccionada);
+
             if (correoExistente) return res.status(200).json({ success: false, message: 'El correo ya está asociado a otro número de documento.' });
             if (citaMismaFecha) return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita para la misma fecha en la misma ciudad y trámite.' });
             if (!citaSeleccionada) return res.status(200).json({ success: false, message: 'Cita no encontrada.' });
@@ -78,6 +83,8 @@ export const insertarCita = [
                 },
                 raw: true
             });
+
+            console.log('citaConfirmada:', citaConfirmada);
 
             if (citaConfirmada) {
                 console.log('Validación: No puede agendar una nueva cita para el mismo trámite hasta que la cita existente haya pasado.');
