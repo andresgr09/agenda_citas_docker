@@ -47,24 +47,28 @@ export const insertarCita = [
             if (citaExistente) {
                 const fechaSolicitudExistente = moment(citaExistente.fecha_solicitud).startOf('day').format('YYYY-MM-DD');
                 const fechaSolicitudActual = moment().startOf('day').format('YYYY-MM-DD');
-
+            
                 console.log('fechaSolicitudExistente:', fechaSolicitudExistente);
                 console.log('fechaSolicitudActual:', fechaSolicitudActual);
-
+            
                 // Verificar si ya existe una cita programada para el mismo día
                 if (fechaSolicitudExistente === fechaSolicitudActual) {
                     console.log('Validación: Solo puede tener una cita programada por día.');
                     return res.status(200).json({ success: false, message: 'Solo puede tener una cita programada por día.' });
                 }
-
+            
                 const fechaCitaExistente = moment(citaExistente.fecha_cita).format('YYYY-MM-DD');
                 const fechaHoy = moment().format('YYYY-MM-DD');
-
+            
                 console.log('fechaCitaExistente:', fechaCitaExistente);
                 console.log('fechaHoy:', fechaHoy);
-
+            
                 if (moment(fechaCitaExistente).isAfter(fechaHoy)) {
                     console.log('Validación: No puede agendar una nueva cita hasta que la cita actual haya pasado.');
+                    if (citaExistente.cita_tramite === tramiteSeleccionado) {
+                        console.log('Validación: No puede agendar una nueva cita para el mismo trámite hasta que la cita existente haya pasado.');
+                        return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita para el mismo trámite hasta que la cita existente haya pasado.' });
+                    }
                     return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita hasta que la cita actual haya pasado.' });
                 }
             
@@ -73,7 +77,6 @@ export const insertarCita = [
                     return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita para el mismo trámite hasta que la cita existente haya pasado.' });
                 }
             }
-
             const fechaCreacion = moment().tz('America/Bogota').format('YYYY-MM-DD HH:mm:ss');
             await CitaDisponible.update({ fecha_creacion: fechaCreacion }, { where: { id_cita_dispo: citaId } });
 
