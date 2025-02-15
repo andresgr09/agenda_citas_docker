@@ -34,7 +34,7 @@ export const insertarCita = [
             const [correoExistente, citaExistente, citaMismaFecha, citaSeleccionada] = await Promise.all([
                 CitaAgendada.findOne({ where: { correo, documento: { [Op.ne]: numIdentificacion } }, raw: true }),
                 CitaAgendada.findOne({ where: { documento: numIdentificacion, tipo_documento: tipoDoc, estado_agenda: 'confirmada' }, order: [['fecha_solicitud', 'DESC']], raw: true }),
-                CitaAgendada.findOne({ where: { fecha_cita, estado_agenda: 'confirmada', ciudad, tramite }, raw: true }),
+                CitaAgendada.findOne({ where: { fecha_cita, estado_agenda: 'confirmada', cita_sede, cita_tramite }, raw: true }),
                 CitaDisponible.findOne({ where: { id_cita_dispo: citaId }, raw: true })
             ]);
 
