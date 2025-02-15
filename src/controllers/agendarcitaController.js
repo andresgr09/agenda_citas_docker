@@ -34,12 +34,12 @@ export const insertarCita = [
             const [correoExistente, citaExistente, citaMismaFecha, citaSeleccionada] = await Promise.all([
                 CitaAgendada.findOne({ where: { correo, documento: { [Op.ne]: numIdentificacion } }, raw: true }),
                 CitaAgendada.findOne({ where: { documento: numIdentificacion, tipo_documento: tipoDoc, estado_agenda: 'confirmada' }, order: [['fecha_solicitud', 'DESC']], raw: true }),
-                CitaAgendada.findOne({ where: { fecha_cita, estado_agenda: 'confirmada', tramite: { [Op.ne]: tramite }, ciudad: { [Op.ne]: ciudad } }, raw: true }),
+                CitaAgendada.findOne({ where: { fecha_cita, estado_agenda: 'confirmada', ciudad, tramite }, raw: true }),
                 CitaDisponible.findOne({ where: { id_cita_dispo: citaId }, raw: true })
             ]);
 
             if (correoExistente) return res.status(200).json({ success: false, message: 'El correo ya está asociado a otro número de documento.' });
-            if (citaMismaFecha) return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita para la misma fecha.' });
+            if (citaMismaFecha) return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita para la misma fecha en la misma ciudad y trámite.' });
             if (!citaSeleccionada) return res.status(200).json({ success: false, message: 'Cita no encontrada.' });
 
             const tramiteSeleccionado = citaSeleccionada.tramite;
