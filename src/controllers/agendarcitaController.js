@@ -5,7 +5,8 @@ import { body, validationResult } from 'express-validator';
 import { enviarCorreoCita } from '../utils/correocita.js';
 import sequelize from 'sequelize';
 import { Op } from 'sequelize';
-moment.locale('es');
+moment.
+locale('es');
 
 export const insertarCita = [
     // Validaciones
@@ -31,62 +32,52 @@ export const insertarCita = [
 
         const { tipoDoc, nombres, numIdentificacion, fechaNacimiento, genero, correo, confirmarCorreo, telefono, citaId, ciudad, tramite, fecha_cita, direccion } = req.body;
         try {
-            const [correoExistente, citaExistente, citaMismaFecha, citaSeleccionada] = await Promise.all([
+            const citasExistentes = await CitaAgendada.findAll({
+                where: { documento: numIdentificacion, tipo_documento: tipoDoc, estado_agenda: 'confirmada' },
+                order: [['fecha_solicitud', 'DESC']],
+                raw: true
+            });
+
+            console.log('Registros de citas existentes:', citasExistentes);
+
+            const fechaSolicitudActual = moment().startOf('day').format('YYYY-MM-DD');
+            const fechaHoy = moment().format('YYYY-MM-DD');
+
+            for (const cita of citasExistentes) {
+                const fechaSolicitudExistente = moment(cita.fecha_solicitud).startOf('day').format('YYYY-MM-DD');
+                const fechaCitaExistente = moment(cita.fecha_cita).format('YYYY-MM-DD');
+
+                if (fechaSolicitudExistente === fechaSolicitudActual) {
+                    console.log('Validación: Solo puede tener una cita programada por día.');
+                    return res.status(200).json({ success: false, message: 'Solo puede tener una cita programada por día.' });
+                }
+
+                if (cita.cita_tramite === tramite && moment(fechaCitaExistente).isAfter(fechaHoy)) {
+                    console.log('Validación: No puede agendar una nueva cita hasta que la cita actual haya pasado.');
+                    return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita hasta que la cita actual haya pasado.' });
+                }
+
+                if (fechaCitaExistente === fecha_cita && cita.cita_tramite !== tramite) {
+                    console.log('Validación: No puede agendar una nueva cita para la misma fecha con un trámite diferente.');
+                    return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita para la misma fecha con un trámite diferente.' });
+                }
+            }
+
+            const [correoExistente, citaMismaFecha, citaSeleccionada] = await Promise.all([
                 CitaAgendada.findOne({ where: { correo, documento: { [Op.ne]: numIdentificacion } }, raw: true }),
-                CitaAgendada.findOne({ where: { documento: numIdentificacion, tipo_documento: tipoDoc, estado_agenda: 'confirmada' }, order: [['fecha_solicitud', 'DESC']], raw: true }),
-                CitaAgendada.findOne({ where: { fecha_cita, estado_agenda: 'confirmada', ciudad, tramite }, raw: true }),
+                CitaAgendada.findOne({ where: { fecha_cita, estado_agenda: 'confirmada', cita_sede: ciudad, cita_tramite: tramite }, raw: true }),
                 CitaDisponible.findOne({ where: { id_cita_dispo: citaId }, raw: true })
             ]);
+
+            console.log('Registro de correo existente:', correoExistente);
+            console.log('Registro de cita en la misma fecha:', citaMismaFecha);
+            console.log('Registro de cita seleccionada:', citaSeleccionada);
 
             if (correoExistente) return res.status(200).json({ success: false, message: 'El correo ya está asociado a otro número de documento.' });
             if (citaMismaFecha) return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita para la misma fecha en la misma ciudad y trámite.' });
             if (!citaSeleccionada) return res.status(200).json({ success: false, message: 'Cita no encontrada.' });
 
             const tramiteSeleccionado = citaSeleccionada.tramite;
-
-            if (citaExistente) {
-                const fechaSolicitudExistente = moment(citaExistente.fecha_solicitud).startOf('day').format('YYYY-MM-DD');
-                const fechaSolicitudActual = moment().startOf('day').format('YYYY-MM-DD');
-            
-                console.log('fechaSolicitudExistente:', fechaSolicitudExistente);
-                console.log('fechaSolicitudActual:', fechaSolicitudActual);
-            
-                // Verificar si ya existe una cita programada para el mismo día
-                if (fechaSolicitudExistente === fechaSolicitudActual) {
-                    console.log('Validación: Solo puede tener una cita programada por día.');
-                    return res.status(200).json({ success: false, message: 'Solo puede tener una cita programada por día.' });
-                }
-            
-                const fechaCitaExistente = moment(citaExistente.fecha_cita).format('YYYY-MM-DD');
-                const fechaHoy = moment().format('YYYY-MM-DD');
-            
-                console.log('fechaCitaExistente:', fechaCitaExistente);
-                console.log('fechaHoy:', fechaHoy);
-                
-                if (moment(fechaCitaExistente).isAfter(fechaHoy)) {
-                    console.log('Validación: No puede agendar una nueva cita hasta que la cita actual haya pasado.');
-                    if (citaExistente.cita_tramite === tramiteSeleccionado) {
-                        console.log('Validación: No puede agendar una nueva cita para el mismo trámite hasta que la cita existente haya pasado.');
-                        return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita para el mismo trámite hasta que la cita existente haya pasado.' });
-                    }
-                    // Permitir agendar una cita para un trámite diferente
-                    if (citaExistente.cita_tramite !== tramiteSeleccionado) {
-                        if (fechaSolicitudExistente !== fechaSolicitudActual && fechaCitaExistente !== fecha_cita) {
-                            console.log('Validación: Puede agendar una nueva cita para un trámite diferente.');
-                        } else {
-                            return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita para la misma fecha de solicitud o fecha de cita.' });
-                        }
-                    } else {
-                        return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita hasta que la cita actual haya pasado.' });
-                    }
-                }
-                
-                // Verificar si ya existe una cita programada para el mismo trámite
-                if (citaExistente.cita_tramite === tramiteSeleccionado) {
-                    console.log('Validación: No puede agendar una nueva cita para el mismo trámite hasta que la cita existente haya pasado.');
-                    return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita para el mismo trámite hasta que la cita existente haya pasado.' });
-                }
-            }
 
             const fechaCreacion = moment().tz('America/Bogota').format('YYYY-MM-DD HH:mm:ss');
             await CitaDisponible.update({ fecha_creacion: fechaCreacion }, { where: { id_cita_dispo: citaId } });
