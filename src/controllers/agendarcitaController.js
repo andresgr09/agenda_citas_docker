@@ -71,12 +71,17 @@ export const insertarCita = [
                     }
                     // Permitir agendar una cita para un trámite diferente
                     if (citaExistente.cita_tramite !== tramiteSeleccionado) {
-                        console.log('Validación: Puede agendar una nueva cita para un trámite diferente.');
+                        if (fechaSolicitudExistente !== fechaSolicitudActual && fechaCitaExistente !== fecha_cita) {
+                            console.log('Validación: Puede agendar una nueva cita para un trámite diferente.');
+                        } else {
+                            return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita para la misma fecha de solicitud o fecha de cita.' });
+                        }
                     } else {
                         return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita hasta que la cita actual haya pasado.' });
                     }
                 }
                 
+                // Verificar si ya existe una cita programada para el mismo trámite
                 if (citaExistente.cita_tramite === tramiteSeleccionado) {
                     console.log('Validación: No puede agendar una nueva cita para el mismo trámite hasta que la cita existente haya pasado.');
                     return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita para el mismo trámite hasta que la cita existente haya pasado.' });
