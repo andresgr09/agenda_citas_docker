@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
 });
 
 // Usa las rutas con el prefijo "/api/ciudades"
-app.use('/api', router);
+app.use('citas/api', router);
 
 const Server = process.env.SERVER 
 
