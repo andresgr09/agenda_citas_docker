@@ -62,21 +62,27 @@ export const insertarCita = [
             
                 console.log('fechaCitaExistente:', fechaCitaExistente);
                 console.log('fechaHoy:', fechaHoy);
-            
+                
                 if (moment(fechaCitaExistente).isAfter(fechaHoy)) {
                     console.log('Validación: No puede agendar una nueva cita hasta que la cita actual haya pasado.');
                     if (citaExistente.cita_tramite === tramiteSeleccionado) {
                         console.log('Validación: No puede agendar una nueva cita para el mismo trámite hasta que la cita existente haya pasado.');
                         return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita para el mismo trámite hasta que la cita existente haya pasado.' });
                     }
-                    return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita hasta que la cita actual haya pasado.' });
+                    // Permitir agendar una cita para un trámite diferente
+                    if (citaExistente.cita_tramite !== tramiteSeleccionado) {
+                        console.log('Validación: Puede agendar una nueva cita para un trámite diferente.');
+                    } else {
+                        return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita hasta que la cita actual haya pasado.' });
+                    }
                 }
-            
+                
                 if (citaExistente.cita_tramite === tramiteSeleccionado) {
                     console.log('Validación: No puede agendar una nueva cita para el mismo trámite hasta que la cita existente haya pasado.');
                     return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita para el mismo trámite hasta que la cita existente haya pasado.' });
                 }
             }
+
             const fechaCreacion = moment().tz('America/Bogota').format('YYYY-MM-DD HH:mm:ss');
             await CitaDisponible.update({ fecha_creacion: fechaCreacion }, { where: { id_cita_dispo: citaId } });
 
