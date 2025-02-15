@@ -74,8 +74,7 @@ export const insertarCita = [
                     documento: numIdentificacion,
                     tipo_documento: tipoDoc,
                     cita_tramite: tramite,
-                    estado_agenda: 'confirmada',
-                    fecha_cita: { [Op.gte]: fechaHoy }
+                    estado_agenda: 'confirmada'
                 },
                 raw: true
             });
