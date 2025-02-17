@@ -30,7 +30,7 @@ export const confirmarCita = async (req, res) => {
         const ahora = moment();
         const diferenciaMinutos = ahora.diff(fechaCreacion, 'minutes');
 
-        if (diferenciaMinutos > 15) {
+        if (diferenciaMinutos > 5) {
             return res.status(400).send(`
                 <html>
                     <body>
@@ -91,33 +91,32 @@ export const confirmarCita = async (req, res) => {
                 </html>
             `);
         }
-
-        // Verificar si ya existe una cita confirmada para el mismo día
-        const fechaCitaSeleccionada = moment(citaSeleccionada.fecha_cita).format('YYYY-MM-DD');
-        const citaConfirmadaMismoDia = await CitaAgendada.findOne({
-            where: {
-                documento: numIdentificacion,
-                fecha_cita: fechaCitaSeleccionada,
-                tipo_documento: tipoDoc,
-                estado_agenda: 'confirmada'
-            }
-        });
-
-        if (citaConfirmadaMismoDia) {
-            return res.status(400).send(`
-                <html>
-                    <body>
-                        <div id="modal" style="display: block; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
-                            <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
-                                <img src="/citas/images/logo-migracion-colombia.png" alt="Logo" style="width: 250px; display: block; margin: 0 auto;">
-                                <h1 style="color: red; text-align: center;">Ya tiene una cita confirmada para este día.</h1>
-                                <button onclick="window.close()" style="display: block; margin: 20px auto; padding: 10px 20px; background-color: #f44336; color: white; border: none; cursor: pointer;">Cerrar ventana</button>
-                            </div>
-                        </div>
-                    </body>
-                </html>
-            `);
+    // Verificar si ya existe una cita confirmada para el mismo día
+    const fechaCitaSeleccionada = moment(citaSeleccionada.fecha_cita).format('YYYY-MM-DD');
+    const citaConfirmadaMismoDia = await CitaAgendada.findOne({
+        where: {
+            documento: numIdentificacion,
+            fecha_cita: fechaCitaSeleccionada,
+            tipo_documento: tipoDoc,
+            estado_agenda: 'confirmada'
         }
+    });
+
+    if (citaConfirmadaMismoDia) {
+        return res.status(400).send(`
+            <html>
+                <body>
+                    <div id="modal" style="display: block; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
+                        <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
+                            <img src="/citas/images/logo-migracion-colombia.png" alt="Logo" style="width: 250px; display: block; margin: 0 auto;">
+                            <h1 style="color: red; text-align: center;">Ya tiene una cita confirmada para este día.</h1>
+                            <button onclick="window.close()" style="display: block; margin: 20px auto; padding: 10px 20px; background-color: #f44336; color: white; border: none; cursor: pointer;">Cerrar ventana</button>
+                        </div>
+                    </div>
+                </body>
+            </html>
+        `);
+    }
 
         // Obtener la fecha y hora actual y restar 5 horas
         const fechaSolicitud = moment().subtract(5, 'hours').format('YYYY-MM-DD HH:mm:ss');

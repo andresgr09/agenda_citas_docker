@@ -10,7 +10,7 @@ export const consultarCitas = async (req, res) => {
     }
 
     try {
-        console.log('Consultando citas con los siguientes parámetros:', { ciudad, tramite, fecha_cita });
+        // console.log('Consultando citas con los siguientes parámetros:', { ciudad, tramite, fecha_cita });
 
         const citas = await CitaDisponible.findAll({
             where: {
@@ -31,7 +31,7 @@ export const consultarCitas = async (req, res) => {
         }
 
         // Devolver las citas encontradas
-        console.log('Citas encontradas:', citas);
+        // console.log('Citas encontradas:', citas);
         res.status(200).json({success : true , data: citas});
     } catch (error) {
         console.error('Error al consultar citas:', error);
