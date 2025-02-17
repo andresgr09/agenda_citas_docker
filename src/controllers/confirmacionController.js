@@ -30,7 +30,7 @@ export const confirmarCita = async (req, res) => {
         const ahora = moment();
         const diferenciaMinutos = ahora.diff(fechaCreacion, 'minutes');
 
-        if (diferenciaMinutos > 5) {
+        if (diferenciaMinutos > 15) {
             return res.status(400).send(`
                 <html>
                     <body>
