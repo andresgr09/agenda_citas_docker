@@ -78,7 +78,7 @@ export const insertarCita = [
             if (!citaSeleccionada) return res.status(200).json({ success: false, message: 'Cita no encontrada.' });
 
 
-            const tramiteSeleccionado = citaSeleccionada.tramite;
+            const tramiteSeleccionado = tramite;
             const fechaCreacion = moment().tz('America/Bogota').format('YYYY-MM-DD HH:mm:ss');
             await CitaDisponible.update({ fecha_creacion: fechaCreacion }, { where: { id_cita_dispo: citaId } });
 
