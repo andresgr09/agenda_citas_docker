@@ -38,7 +38,7 @@ export const insertarCita = [
                 raw: true
             });
 
-            console.log('Registros de citas existentes:', citasExistentes);
+            // console.log('Registros de citas existentes:', citasExistentes);
 
             const fechaSolicitudActual = moment().startOf('day').format('YYYY-MM-DD');
             const fechaHoy = moment().format('YYYY-MM-DD');
@@ -48,17 +48,17 @@ export const insertarCita = [
                 const fechaCitaExistente = moment(cita.fecha_cita).format('YYYY-MM-DD');
 
                 if (fechaSolicitudExistente === fechaSolicitudActual) {
-                    console.log('Validación: Solo puede tener una cita programada por día.');
+                    // console.log('Validación: Solo puede tener una cita programada por día.');
                     return res.status(200).json({ success: false, message: 'Solo puede tener una cita programada por día.' });
                 }
 
                 if (cita.cita_tramite === tramite && moment(fechaCitaExistente).isAfter(fechaHoy)) {
-                    console.log('Validación: No puede agendar una nueva cita hasta que la cita actual haya pasado.');
+                    // console.log('Validación: No puede agendar una nueva cita hasta que la cita actual haya pasado.');
                     return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita hasta que la cita actual haya pasado.' });
                 }
 
                 if (fechaCitaExistente === fecha_cita && cita.cita_tramite !== tramite) {
-                    console.log('Validación: No puede agendar una nueva cita para la misma fecha con un trámite diferente.');
+                    // console.log('Validación: No puede agendar una nueva cita para la misma fecha con un trámite diferente.');
                     return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita para la misma fecha con un trámite diferente.' });
                 }
             }
@@ -69,9 +69,9 @@ export const insertarCita = [
                 CitaDisponible.findOne({ where: { id_cita_dispo: citaId }, raw: true })
             ]);
 
-            console.log('Registro de correo existente:', correoExistente);
-            console.log('Registro de cita en la misma fecha:', citaMismaFecha);
-            console.log('Registro de cita seleccionada:', citaSeleccionada);
+            // console.log('Registro de correo existente:', correoExistente);
+            // console.log('Registro de cita en la misma fecha:', citaMismaFecha);
+            // console.log('Registro de cita seleccionada:', citaSeleccionada);
 
             if (correoExistente) return res.status(200).json({ success: false, message: 'El correo ya está asociado a otro número de documento.' });
             if (citaMismaFecha) return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita para la misma fecha en la misma ciudad y trámite.' });
@@ -84,7 +84,7 @@ export const insertarCita = [
 
             await enviarCorreoCita(nombres, fecha_cita, citaSeleccionada, direccion, ciudad, tramiteSeleccionado, citaId, tipoDoc, numIdentificacion, fechaNacimiento, genero, correo, telefono);
 
-            console.log('Cita guardada. Revise su correo para confirmar.');
+            // console.log('Cita guardada. Revise su correo para confirmar.');
             return res.status(200).json({ success: true, message: 'Cita guardada. Revise su correo para confirmar.' });
         } catch (error) {
             console.error('Error al insertar cita:', error);

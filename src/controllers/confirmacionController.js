@@ -142,7 +142,7 @@ export const confirmarCita = async (req, res) => {
             id_cita_dispo_fk: citaSeleccionada.id_cita_dispo // Guardar el id_cita_dispo en id_cita_dispo_fk
         });
 
-        console.log(`Cita agendada con id_cita_dispo_fk: ${nuevaCita.id_cita_dispo_fk}`);
+        // console.log(`Cita agendada con id_cita_dispo_fk: ${nuevaCita.id_cita_dispo_fk}`);
 
         // Obtener el radicado de la cita agendada
         const citaAgendada = await CitaAgendada.findOne({ where: { id_cita: nuevaCita.id_cita } });
