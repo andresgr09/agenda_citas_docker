@@ -147,8 +147,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             Swal.fire({
-                icon: 'success',
-                title: 'Cita guardada',
+                icon: 'warning',
+                title: 'Confirme su cita',
                 html: 'Por favor, revise su correo electrónico para confirmar el agendamiento de su cita. <br><strong>NOTA: Recuerde que debe confirmar su cita en los próximos 5 minutos. De no hacerlo, tendrá que realizar un nuevo agendamiento.</strong>',
                 confirmButtonColor: '#337ab7',
                 confirmButtonText: 'Aceptar',
