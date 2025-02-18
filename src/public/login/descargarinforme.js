@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch(`/citas/0/api/informe-completo?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&formato=excel`, {
+            const response = await fetch(`/citas/api/informe-completo?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&formato=excel`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
