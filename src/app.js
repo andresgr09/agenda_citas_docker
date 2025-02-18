@@ -5,7 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url'; // Necesario para obtener la ruta actual en ESM
 import sequelize from './config/database.js';
 import router from './routes/index.js'; // Importar las rutas de ciudades
-import {obtenerCitasAgendadas}  from './controllers/descargarcitasController.js';
+import {obtenerCitasAgendadas, obtenerInformeCompleto}  from './controllers/descargarcitasController.js';
 import  {verificarToken}  from './middleware/auth.js';
 dotenv.config();
 
@@ -41,6 +41,7 @@ app.use('/api', router);
 const Server = process.env.SERVER 
 
 router.get('/citas-agendadas', verificarToken, obtenerCitasAgendadas);
+router.get('/informe-completo',verificarToken, obtenerInformeCompleto);
 
 
 // Sincronizar la base de datos y luego iniciar el servidor

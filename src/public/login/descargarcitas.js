@@ -1,6 +1,3 @@
-
-
-
 document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('authToken');
     if (!token) {
@@ -57,6 +54,19 @@ document.getElementById('descargarCsv').addEventListener('click', async () => {
                 'Authorization': `Bearer ${token}`
             }
         });
+
+        if (response.status === 401) {
+            Swal.fire({
+                icon: 'error',
+                title: 'No autorizado',
+                text: 'Tu sesión ha expirado. Por favor, inicia sesión nuevamente.',
+                confirmButtonText: 'Aceptar'
+            }).then(() => {
+                localStorage.removeItem('authToken');
+                window.location.href = 'index.html';  // Redirige al login
+            });
+            return;
+        }
 
         if (response.status === 404) {
             Swal.fire({
