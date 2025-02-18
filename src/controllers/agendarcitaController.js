@@ -62,11 +62,10 @@ export const insertarCita = [
                     return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita para la misma fecha con un trámite diferente.' });
                 }
             }
-
             const [correoExistente, citaExistente, citaMismaFecha, citaSeleccionada] = await Promise.all([
                 CitaAgendada.findOne({ where: { correo, documento: { [Op.ne]: numIdentificacion } }, raw: true }),
                 CitaAgendada.findOne({ where: { documento: numIdentificacion, tipo_documento: tipoDoc, estado_agenda: 'confirmada' }, order: [['fecha_solicitud', 'DESC']], raw: true }),
-                CitaAgendada.findOne({ where: { fecha_cita, estado_agenda: 'confirmada', cita_sede: ciudad, cita_tramite: tramite }, raw: true }),
+                CitaAgendada.findOne({ where: { fecha_cita, estado_agenda: 'confirmada', cita_sede: ciudad, cita_tramite: tramite, documento: numIdentificacion, tipo_documento: tipoDoc }, raw: true }),
                 CitaDisponible.findOne({ where: { id_cita_dispo: citaId }, raw: true })
             ]);
             
@@ -75,9 +74,8 @@ export const insertarCita = [
             // console.log('Registro de cita seleccionada:', citaSeleccionada);
             
             if (correoExistente) return res.status(200).json({ success: false, message: 'El correo ya está asociado a otro número de documento.' });
-            // if (citaMismaFecha) return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita para la misma fecha en la misma ciudad y trámite.' });
+            if (citaMismaFecha) return res.status(200).json({ success: false, message: 'No puede agendar una nueva cita para la misma fecha en la misma ciudad y trámite.' });
             if (!citaSeleccionada) return res.status(200).json({ success: false, message: 'Cita no encontrada.' });
-
 
             const tramiteSeleccionado = tramite;
             const fechaCreacion = moment().tz('America/Bogota').format('YYYY-MM-DD HH:mm:ss');
