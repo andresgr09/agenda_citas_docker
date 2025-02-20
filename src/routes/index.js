@@ -20,7 +20,7 @@ router.get('/citas', obtenerCitaAgendada);
 router.get('/tramites', obtenerTramite);
 router.post('/consultar-citas', consultarCitas);
 router.post('/guardar-cita', insertarCita);
-router.get('/confirmar-cita/:id', confirmarCita);
+router.get('/confirmar-cita/:token',  confirmarCita);
 router.post('/usuarios/register', registrarUsuario);
 router.post('/usuarios/login', loginUsuario);
 // router.post('/verificar-documento', verificarDocumento);
