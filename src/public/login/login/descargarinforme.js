@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch(`/citas/api/informe-completo?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`, {
+            const response = await fetch(`http://localhost:8080/api/informe-completo?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`

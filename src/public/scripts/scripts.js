@@ -29,7 +29,17 @@ document.addEventListener('DOMContentLoaded', () => {
         disable: [
             function(date) {
                 // Deshabilitar sábados (6) y domingos (0)
-                return (date.getDay() === 0 || date.getDay() === 6);
+                if (date.getDay() === 0 || date.getDay() === 6) {
+                    return true;
+                }
+                // Obtener la fecha actual
+                const today = new Date();
+                // Obtener el primer día de la semana (lunes)
+                const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 1));
+                // Obtener el último día de la semana (viernes)
+                const lastDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 5));
+                // Deshabilitar fechas fuera de la semana actual
+                return date < firstDayOfWeek || date > lastDayOfWeek;
             }
         ]
     });

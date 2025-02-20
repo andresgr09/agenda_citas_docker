@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url'; // Necesario para obtener la ruta actual en
 import sequelize from './config/database.js';
 import router from './routes/index.js'; // Importar las rutas de ciudades
 import {obtenerCitasAgendadas, obtenerInformeCompleto}  from './controllers/descargarcitasController.js';
+import bodyParser from 'body-parser';
 import  {verificarToken}  from './middleware/auth.js';
 dotenv.config();
 
@@ -26,6 +27,8 @@ app.use(cors(corsOptions));  // Usa la configuración de CORS con la opción par
 // Middlewares
 app.use(express.json());
 
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 // Servir archivos estáticos desde la carpeta 'public'
 app.use(express.static('src/public'));
 app.use('/images', express.static('src/public/images'));
