@@ -25,10 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'descargarinforme.html';
     });
 
-    importarcitas.addEventListener('click', () => {
-        window.location.href = 'importar_citas.html';
-    });
-
+   
     // Cerrar sesión
     cerrarSesionBtn.addEventListener('click', () => {
         Swal.fire({
