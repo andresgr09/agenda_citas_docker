@@ -37,7 +37,7 @@ const CitaDisponible = sequelize.define('CitaDisponible', {
     },
     fecha_creacion: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
       defaultValue: DataTypes.NOW // Usa DataTypes.NOW para el valor por defecto
     },
 }, {
