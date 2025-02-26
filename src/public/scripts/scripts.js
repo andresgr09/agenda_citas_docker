@@ -84,6 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Validación de datos del formulario
         const errors = validateFormData(data);
+        const isFutureDate = errors.includes('La fecha de nacimiento no puede ser una fecha futura.');
+        const isMinor = errors.includes('Debe estar acompañado por su padre, madre o representante legal al momento de la cita.');
+
         if (errors.length > 0) {
             Swal.fire({
                 icon: 'warning',
@@ -91,17 +94,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 html: errors.join('<br>'),
                 confirmButtonColor: '#337ab7',
                 confirmButtonText: 'Aceptar',
+            }).then(async () => {
+                if (!isFutureDate) {
+                    await proceedWithAppointment(data);
+                }
             });
             return;
         }
 
+        await proceedWithAppointment(data);
+    });
+
+    const proceedWithAppointment = async (data) => {
         // Validación de correo y documento
         const tipoDoc = data.tipoDoc;
         const numIdentificacion = data.numIdentificacion;
         const correo = data.correo;
 
         try {
-            const response = await fetch('/citas/api/validar-correo-documento', {
+            const response = await fetch('/api/validar-correo-documento', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -147,8 +158,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             Swal.fire({
-                icon: 'warning',
-                title: 'Confirme su cita',
+                icon: 'success',
+                title: 'Cita guardada',
                 html: 'Por favor, revise su correo electrónico para confirmar el agendamiento de su cita. <br><strong>NOTA: Recuerde que debe confirmar su cita en los próximos 5 minutos. De no hacerlo, tendrá que realizar un nuevo agendamiento.</strong>',
                 confirmButtonColor: '#337ab7',
                 confirmButtonText: 'Aceptar',
@@ -161,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 text: `Error al guardar la cita: ${error.message}`,
             });
         }
-    });
+    };
 
     modalOverlay.addEventListener('click', (event) => {
         // Verifica que el clic sea en el overlay, no dentro del modal
