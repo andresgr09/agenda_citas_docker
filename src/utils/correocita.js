@@ -18,7 +18,7 @@ export const enviarCorreoCita = async (nombres, fecha_cita, citaSeleccionada, di
     tramiteSeleccionado,
     fecha_cita,
     direccion
-}, 'tu_secreto', { expiresIn: '1h' });
+}, 'tu_secreto', { expiresIn: '5m' });
   
     const mensaje = `
     <p>
