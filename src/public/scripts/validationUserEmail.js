@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const correo = correoInput.value;
 
         try {
-            const response = await fetch('/api/validar-correo-documento', {
+            const response = await fetch('/citas/api/validar-correo-documento', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
