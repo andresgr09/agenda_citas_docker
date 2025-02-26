@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 title: 'Error',
                 text: `Error al guardar la cita: ${error.message}`,
             });
-        };
+        
         }
     };
 
