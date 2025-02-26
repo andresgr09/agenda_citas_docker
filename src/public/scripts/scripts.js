@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const correo = data.correo;
 
         try {
-            const response = await fetch('/api/validar-correo-documento', {
+            const response = await fetch('/citas/api/validar-correo-documento', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
