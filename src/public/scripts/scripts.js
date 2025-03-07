@@ -181,4 +181,17 @@ document.addEventListener('DOMContentLoaded', () => {
             modalOverlay.classList.remove('visible');
         }
     });
+    const fechaNacimientoInput = document.getElementById('fechaNacimiento');
+
+    fechaNacimientoInput.addEventListener('input', () => {
+        const fechaNacimiento = new Date(fechaNacimientoInput.value);
+        const year = fechaNacimiento.getFullYear();
+        const minYear = 1900;
+
+        if (year < minYear) {
+            fechaNacimientoInput.setCustomValidity(`El año de nacimiento no puede ser menor a ${minYear}.`);
+        } else {
+            fechaNacimientoInput.setCustomValidity('');
+        }
+    });
 });

@@ -9,6 +9,8 @@ import {obtenerCitasAgendadas, obtenerInformeCompleto}  from './controllers/desc
 import bodyParser from 'body-parser';
 import  {verificarToken}  from './middleware/auth.js';
 import  citadispoPrueba  from './models/citasdispoPrueba.js';
+import {historicoCita} from './controllers/descargarHistoricoController.js';
+
 dotenv.config();
 
 const app = express();
@@ -46,6 +48,7 @@ const Server = process.env.SERVER
 
 router.get('/citas-agendadas', verificarToken, obtenerCitasAgendadas);
 router.get('/informe-completo',verificarToken, obtenerInformeCompleto);
+router.get('/historico-citas', historicoCita);
 
 
 // Sincronizar la base de datos y luego iniciar el servidor
