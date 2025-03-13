@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Descargar Informe Completo</title>
+    <title>Descargar Historico Citas</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="icon" href="../images//favico.png" type="image/png">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 -->
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen">
     <div class="bg-white p-6 rounded shadow-md w-full max-w-md">
-        <h1 class="text-xl font-semibold text-center mb-4">Descargar Informe Completo</h1>
+        <h1 class="text-xl font-semibold text-center mb-4">Descargar Informe Completo Historial Citas</h1>
 
         <form id="fechaForm" class="space-y-4">
             <div>
@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <script src="descargarinforme.js"></script> <!-- Incluir el archivo JavaScript --><script>
+    <script src="descargarhistorico.js"></script> <!-- Incluir el archivo JavaScript --><script>
         const token = localStorage.getItem('authToken');
         if (!token) {
             Swal.fire({

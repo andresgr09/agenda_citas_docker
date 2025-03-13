@@ -1,10 +1,24 @@
 import { enviarCorreoConfirmacion } from '../controllers/mailer.js';
 import moment from 'moment-timezone';
 import fs from 'fs';
-
+import jwt from 'jsonwebtoken';
 export const enviarCorreoCita = async (nombres, fecha_cita, citaSeleccionada, direccion, ciudad, tramiteSeleccionado, citaId, tipoDoc, numIdentificacion, fechaNacimiento, genero, correo, telefono) => {
     const asunto = 'CONFIRMACIÓN DE CITA - MIGRACIÓN COLOMBIA';
-
+ // Generar el token
+ const token = jwt.sign({
+    citaId,
+    tipoDoc,
+    nombres,
+    numIdentificacion,
+    fechaNacimiento,
+    genero,
+    correo,
+    telefono,
+    ciudad,
+    tramiteSeleccionado,
+    fecha_cita,
+    direccion
+}, 'tu_secreto', { expiresIn: '5m' });
   
     const mensaje = `
     <p>
@@ -37,8 +51,7 @@ export const enviarCorreoCita = async (nombres, fecha_cita, citaSeleccionada, di
         <p>Por favor, recuerde presentarse con 15 minutos de anticipación.</p>
         <p>Consulte los requisitos del trámite a realizar <a href="https://www.migracioncolombia.gov.co/tramites/tramites-migracion-colombia">aquí</a></p>
         <p>NOTA: Recuerde que la cita programada debe coincidir con el trámite que va a realizar. De lo contrario, no podrá ser atendido.</p>
-        <p><strong>Si desea CONFIRMAR SU CITA, haga clic <a href="https://apps.migracioncolombia.gov.co:4443/citas/api/confirmar-cita/${citaId}?tipoDoc=${tipoDoc}&nombres=${nombres}&numIdentificacion=${numIdentificacion}&fechaNacimiento=${fechaNacimiento}&genero=${genero}&correo=${correo}&telefono=${telefono}&ciudad=${ciudad}&tramite=${tramiteSeleccionado}&fecha_cita=${fecha_cita}&direccion=${direccion}">AQUÍ</a></strong></p>
-    `;
+       <p><strong>Si desea CONFIRMAR SU CITA, haga clic <a href="https://apps.migracioncolombia.gov.co:4443/citas/api/confirmar-cita/${token}">AQUÍ</a></strong></p>  `;
 
     await enviarCorreoConfirmacion(correo, asunto, mensaje);
 };

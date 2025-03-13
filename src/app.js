@@ -6,7 +6,11 @@ import { fileURLToPath } from 'url'; // Necesario para obtener la ruta actual en
 import sequelize from './config/database.js';
 import router from './routes/index.js'; // Importar las rutas de ciudades
 import {obtenerCitasAgendadas, obtenerInformeCompleto}  from './controllers/descargarcitasController.js';
+import bodyParser from 'body-parser';
 import  {verificarToken}  from './middleware/auth.js';
+import  citadispoPrueba  from './models/citasdispoPrueba.js';
+import {historicoCita} from './controllers/descargarHistoricoController.js';
+
 dotenv.config();
 
 const app = express();
@@ -26,6 +30,7 @@ app.use(cors(corsOptions));  // Usa la configuración de CORS con la opción par
 // Middlewares
 app.use(express.json());
 
+
 // Servir archivos estáticos desde la carpeta 'public'
 app.use(express.static('src/public'));
 app.use('/images', express.static('src/public/images'));
@@ -34,7 +39,8 @@ app.use('/images', express.static('src/public/images'));
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
-
+app.use(bodyParser.json({ limit: '100mb' }));
+app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 // Usa las rutas con el prefijo "/api/ciudades"
 app.use('/api', router);
 
@@ -42,6 +48,7 @@ const Server = process.env.SERVER
 
 router.get('/citas-agendadas', verificarToken, obtenerCitasAgendadas);
 router.get('/informe-completo',verificarToken, obtenerInformeCompleto);
+router.get('/historico-citas', historicoCita);
 
 
 // Sincronizar la base de datos y luego iniciar el servidor

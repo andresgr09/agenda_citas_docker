@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
 
-const CitaDisponible = sequelize.define('CitaDisponible', {
+const CitaDispoPrueba = sequelize.define('CitaDispoPrueba', {
     id_cita_dispo: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -37,12 +37,12 @@ const CitaDisponible = sequelize.define('CitaDisponible', {
     },
     fecha_creacion: {
       type: DataTypes.DATE,
-      allowNull: true,
+      allowNull: false,
       defaultValue: DataTypes.NOW // Usa DataTypes.NOW para el valor por defecto
     },
 }, {
-    tableName: 'citas_disponibles',
+    tableName: 'citas_disponibles_prueba',
     timestamps: false
 });
 
-export default CitaDisponible;
+export default CitaDispoPrueba;

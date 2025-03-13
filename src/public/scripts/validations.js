@@ -7,6 +7,11 @@ const dominiosValidos = [
 export const validarEdad = (fechaNacimiento) => {
     const fechaNac = new Date(fechaNacimiento);
     const hoy = new Date();
+
+    if (fechaNac > hoy) {
+        return -1; // Indicador de fecha futura
+    }
+
     let edad = hoy.getFullYear() - fechaNac.getFullYear();
     const mes = hoy.getMonth() - fechaNac.getMonth();
     const dia = hoy.getDate() - fechaNac.getDate();
@@ -15,7 +20,7 @@ export const validarEdad = (fechaNacimiento) => {
         edad--;
     }
 
-    return edad >= 18;
+    return edad;
 };
 
 export const validarCorreos = (correo, confirmarCorreo) => {
@@ -29,9 +34,12 @@ export const validarDominioCorreo = (correo) => {
 
 export const validateFormData = (data) => {
     const errors = [];
+    const edad = validarEdad(data.fechaNacimiento);
 
-    if (!validarEdad(data.fechaNacimiento)) {
-        errors.push('Debe ser mayor de 18 años para agendar una cita.');
+    if (edad === -1) {
+        errors.push('La fecha de nacimiento no puede ser una fecha futura.');
+    } else if (edad < 18) {
+        errors.push('Debe estar acompañado por su padre, madre o representante legal al momento de la cita.');
     }
 
     if (!validarCorreos(data.correo, data.confirmarCorreo)) {

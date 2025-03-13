@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         disable: [
             function(date) {
                 // Deshabilitar sábados (6) y domingos (0)
-                return (date.getDay() === 0 || date.getDay() === 6);
+                return date.getDay() === 0 || date.getDay() === 6;
             }
         ]
     });
@@ -84,6 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Validación de datos del formulario
         const errors = validateFormData(data);
+        const isFutureDate = errors.includes('La fecha de nacimiento no puede ser una fecha futura.');
+        const isMinor = errors.includes('Debe estar acompañado por su padre, madre o representante legal al momento de la cita.');
+
         if (errors.length > 0) {
             Swal.fire({
                 icon: 'warning',
@@ -91,10 +94,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 html: errors.join('<br>'),
                 confirmButtonColor: '#337ab7',
                 confirmButtonText: 'Aceptar',
+            }).then(async () => {
+                if (!isFutureDate) {
+                    await proceedWithAppointment(data);
+                }
             });
             return;
         }
 
+        await proceedWithAppointment(data);
+    });
+
+    const proceedWithAppointment = async (data) => {
         // Validación de correo y documento
         const tipoDoc = data.tipoDoc;
         const numIdentificacion = data.numIdentificacion;
@@ -145,7 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 return;
             }
-
             Swal.fire({
                 icon: 'warning',
                 title: 'Confirme su cita',
@@ -160,14 +170,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 title: 'Error',
                 text: `Error al guardar la cita: ${error.message}`,
             });
+        
         }
-    });
+    };
 
     modalOverlay.addEventListener('click', (event) => {
         // Verifica que el clic sea en el overlay, no dentro del modal
         if (event.target === modalOverlay) {
             document.getElementById('form-modal').classList.remove('visible');
             modalOverlay.classList.remove('visible');
+        }
+    });
+    const fechaNacimientoInput = document.getElementById('fechaNacimiento');
+
+    fechaNacimientoInput.addEventListener('input', () => {
+        const fechaNacimiento = new Date(fechaNacimientoInput.value);
+        const year = fechaNacimiento.getFullYear();
+        const minYear = 1900;
+
+        if (year < minYear) {
+            fechaNacimientoInput.setCustomValidity(`El año de nacimiento no puede ser menor a ${minYear}.`);
+        } else {
+            fechaNacimientoInput.setCustomValidity('');
         }
     });
 });

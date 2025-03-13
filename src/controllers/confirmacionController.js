@@ -1,13 +1,15 @@
 import CitaAgendada from '../models/citasagendadasModel.js';
 import CitaDisponible from '../models/citasdisponiblesModel.js';
 import moment from 'moment-timezone';
+import jwt from 'jsonwebtoken';
 
 export const confirmarCita = async (req, res) => {
-    const { id } = req.params;
-    const { tipoDoc, nombres, numIdentificacion, fechaNacimiento, genero, correo, telefono, ciudad, tramite, fecha_cita, direccion } = req.query;
-
+    const { token } = req.params;
     try {
-        const citaSeleccionada = await CitaDisponible.findOne({ where: { id_cita_dispo: id } });
+        const decoded = jwt.verify(token, 'tu_secreto');
+        const { citaId, tipoDoc, nombres, numIdentificacion, fechaNacimiento, genero, correo, telefono, ciudad, tramiteSeleccionado, fecha_cita, direccion } = decoded;
+
+        const citaSeleccionada = await CitaDisponible.findOne({ where: { id_cita_dispo: citaId } });
 
         if (!citaSeleccionada) {
             return res.status(404).send(`
@@ -65,7 +67,8 @@ export const confirmarCita = async (req, res) => {
                             <div id="modal" style="display: block; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
                                 <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
                                     <img src="/citas/images/logo-migracion-colombia.png" alt="Logo" style="width: 250px; display: block; margin: 0 auto;">
-                                    <h1 style="color: red; text-align: center;">Solo puede tener una cita programada por día.</h1>
+                                    <h1 style="color: red; text-align: center;">Esta cita ya fue confirmada, intente nuevamente.
+                                Nota: Recuerde que solo podrá tener una cita programada por día para el mismo trámite en la misma o diferente ciudad.</h1>
                                     <button onclick="window.close()" style="display: block; margin: 20px auto; padding: 10px 20px; background-color: #f44336; color: white; border: none; cursor: pointer;">Cerrar ventana</button>
                                 </div>
                             </div>
@@ -91,32 +94,33 @@ export const confirmarCita = async (req, res) => {
                 </html>
             `);
         }
-    // Verificar si ya existe una cita confirmada para el mismo día
-    const fechaCitaSeleccionada = moment(citaSeleccionada.fecha_cita).format('YYYY-MM-DD');
-    const citaConfirmadaMismoDia = await CitaAgendada.findOne({
-        where: {
-            documento: numIdentificacion,
-            fecha_cita: fechaCitaSeleccionada,
-            tipo_documento: tipoDoc,
-            estado_agenda: 'confirmada'
-        }
-    });
 
-    if (citaConfirmadaMismoDia) {
-        return res.status(400).send(`
-            <html>
-                <body>
-                    <div id="modal" style="display: block; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
-                        <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
-                            <img src="/citas/images/logo-migracion-colombia.png" alt="Logo" style="width: 250px; display: block; margin: 0 auto;">
-                            <h1 style="color: red; text-align: center;">Ya tiene una cita confirmada para este día.</h1>
-                            <button onclick="window.close()" style="display: block; margin: 20px auto; padding: 10px 20px; background-color: #f44336; color: white; border: none; cursor: pointer;">Cerrar ventana</button>
+        // Verificar si ya existe una cita confirmada para el mismo día
+        const fechaCitaSeleccionada = moment(citaSeleccionada.fecha_cita).format('YYYY-MM-DD');
+        const citaConfirmadaMismoDia = await CitaAgendada.findOne({
+            where: {
+                documento: numIdentificacion,
+                fecha_cita: fechaCitaSeleccionada,
+                tipo_documento: tipoDoc,
+                estado_agenda: 'confirmada'
+            }
+        });
+
+        if (citaConfirmadaMismoDia) {
+            return res.status(400).send(`
+                <html>
+                    <body>
+                        <div id="modal" style="display: block; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
+                            <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
+                                <img src="/citas/images/logo-migracion-colombia.png" alt="Logo" style="width: 250px; display: block; margin: 0 auto;">
+                                <h1 style="color: red; text-align: center;">Ya tiene una cita confirmada para este día.</h1>
+                                <button onclick="window.close()" style="display: block; margin: 20px auto; padding: 10px 20px; background-color: #f44336; color: white; border: none; cursor: pointer;">Cerrar ventana</button>
+                            </div>
                         </div>
-                    </div>
-                </body>
-            </html>
-        `);
-    }
+                    </body>
+                </html>
+            `);
+        }
 
         // Obtener la fecha y hora actual y restar 5 horas
         const fechaSolicitud = moment().subtract(5, 'hours').format('YYYY-MM-DD HH:mm:ss');
@@ -135,7 +139,7 @@ export const confirmarCita = async (req, res) => {
             telefono,
             fecha_nacimiento: fechaNacimiento,
             cita_sede: ciudad,
-            cita_tramite: tramite,
+            cita_tramite: tramiteSeleccionado,
             direccion,
             estado_agenda: 'confirmada',
             id_cita_dispo_fk: citaSeleccionada.id_cita_dispo // Guardar el id_cita_dispo en id_cita_dispo_fk
