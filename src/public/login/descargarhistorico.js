@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch(`http://localhost:8080/api/informe-completo?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`, {
+            const response = await fetch(`/citas/api/historico-citas?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&formato=excel`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const a = document.createElement('a');
             a.style.display = 'none';
             a.href = url;
-            a.download = `informe-completo_${fechaInicio}_al_${fechaFin}.xlsx`;
+            a.download = `historico-citas_${fechaInicio}_al_${fechaFin}.xlsx`;
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
